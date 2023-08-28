@@ -14,7 +14,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        return Product::paginate();
     }
 
     /**
@@ -35,7 +35,14 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        //
+        $data = $request->validated();
+
+        $product = Product::create($data);
+
+        return response()->json([
+            'message' => 'Product created successfully',
+            'product' => $product,
+        ], 201);
     }
 
     /**
@@ -75,11 +82,19 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Product  $product
+     * @param string $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
+    public function destroy(string $id)
     {
-        //
+        $deleted = Product::where('id', $id)->delete();
+
+        if (!$deleted) {
+            return response()->json([
+                'message' => 'Product not found',
+            ], 404);
+        }
+
+        return response(null, 204);
     }
 }
