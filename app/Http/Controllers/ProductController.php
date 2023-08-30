@@ -70,13 +70,22 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      *
+     * @param  string  $id
      * @param  \App\Http\Requests\UpdateProductRequest  $request
-     * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateProductRequest $request, Product $product)
+    public function update(string $id, UpdateProductRequest $request)
     {
-        //
+        $product = Product::findOrFail($id);
+
+        $data = $request->validated();
+
+        $product->update($data);
+
+        return response()->json([
+            'message' => 'Product updated successfully',
+            'product' => $product,
+        ], 200);
     }
 
     /**

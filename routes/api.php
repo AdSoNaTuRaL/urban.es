@@ -23,5 +23,6 @@ Route::group(['prefix' => 'products'], function ($router) {
     $router->get('/', [ProductController::class, 'index']);
     $router->get('/{id}', [ProductController::class, 'show']);
     $router->post('/', [ProductController::class, 'store']);
+    $router->put('/{id}', [ProductController::class, 'update']);
     $router->delete('/{id}', [ProductController::class, 'destroy']);
 });
